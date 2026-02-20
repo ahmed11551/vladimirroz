@@ -39,7 +39,7 @@ export function Assortment() {
 
       <div style={{ display: 'grid', gap: 16 }}>
         {products.map((p) => (
-          <div key={p.id} className="card" style={{ padding: 20, display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+          <div key={p.id} className="card list-item" style={{ padding: 20, display: 'flex', gap: 16, alignItems: 'flex-start' }}>
             <div
               style={{
                 width: 56,

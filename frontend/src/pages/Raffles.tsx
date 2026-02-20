@@ -57,8 +57,8 @@ export function Raffles() {
           {raffles.map((r) => {
             const progress = r.total_slots > 0 ? Math.round((r.paid_slots / r.total_slots) * 100) : 0;
             return (
+              <div key={r.id} className="list-item">
               <Link
-                key={r.id}
                 to={`/raffles/${r.id}`}
                 className="card"
                 style={{
@@ -117,6 +117,7 @@ export function Raffles() {
                   </div>
                 </div>
               </Link>
+              </div>
             );
           })}
         </div>
