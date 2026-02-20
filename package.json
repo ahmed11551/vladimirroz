@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "bot:setup": "node backend/scripts/setup-bot.js",
+    "db:reset": "node backend/scripts/reset-mock-data.js",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
