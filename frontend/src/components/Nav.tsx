@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
 const tabs = [
-  { to: '/assortment', label: 'Ассортимент', icon: '📦' },
+  { to: '/assortment', label: 'Ассортимент', icon: '🛒' },
   { to: '/reviews', label: 'Отзывы', icon: '⭐' },
   { to: '/delivery', label: 'Доставка', icon: '🚚' },
   { to: '/raffles', label: 'Розыгрыши', icon: '🎁' },
@@ -9,34 +9,15 @@ const tabs = [
 
 export function Nav() {
   return (
-    <nav
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        display: 'flex',
-        background: 'var(--tg-theme-bg-color)',
-        borderTop: '1px solid #eee',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        zIndex: 100,
-      }}
-    >
+    <nav className="nav">
       {tabs.map(({ to, label, icon }) => (
         <NavLink
           key={to}
           to={to}
-          style={({ isActive }) => ({
-            flex: 1,
-            padding: '10px 8px',
-            textAlign: 'center' as const,
-            textDecoration: 'none',
-            color: isActive ? 'var(--tg-theme-button-color)' : 'var(--tg-theme-hint-color)',
-            fontSize: 11,
-          })}
+          className={({ isActive }) => `nav-item ${isActive ? 'nav-item--active' : ''}`}
         >
-          <div style={{ fontSize: 20, marginBottom: 2 }}>{icon}</div>
-          {label}
+          <span className="nav-icon">{icon}</span>
+          <span className="nav-label">{label}</span>
         </NavLink>
       ))}
     </nav>

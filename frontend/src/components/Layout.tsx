@@ -3,8 +3,8 @@ import { Nav } from './Nav';
 
 export function Layout() {
   return (
-    <div style={{ minHeight: '100vh', paddingBottom: 60 }}>
-      <main style={{ padding: 16 }}>
+    <div className="layout">
+      <main className="main-content">
         <Outlet />
       </main>
       <Nav />

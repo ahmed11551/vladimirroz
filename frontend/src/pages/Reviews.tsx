@@ -42,36 +42,50 @@ export function Reviews() {
     }
   };
 
-  if (loading) return <div style={{ textAlign: 'center', padding: 40 }}>Загрузка...</div>;
+  if (loading) {
+    return (
+      <div className="loading">
+        <div className="loading-spinner" />
+        <span>Загрузка отзывов...</span>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Отзывы</h1>
-      <div style={{ marginBottom: 24 }}>
+      <header className="page-header">
+        <h1 className="page-title">Отзывы</h1>
+        <p className="page-subtitle">Что говорят наши победители</p>
+      </header>
+
+      <div className="card" style={{ padding: 20, marginBottom: 24 }}>
+        <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Оставить отзыв</h3>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Напишите отзыв..."
+          placeholder="Поделитесь впечатлениями..."
           style={{
             width: '100%',
             minHeight: 100,
-            padding: 12,
-            borderRadius: 8,
-            border: '1px solid #ddd',
-            fontSize: 14,
+            padding: 14,
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid #e5e7eb',
+            fontSize: 15,
             resize: 'vertical',
+            fontFamily: 'inherit',
           }}
         />
-        <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 14, color: 'var(--tg-theme-hint-color)' }}>Оценка:</span>
           {[1, 2, 3, 4, 5].map((r) => (
             <button
               key={r}
               onClick={() => setRating(r)}
               style={{
-                padding: 4,
-                background: rating >= r ? '#ffc107' : '#eee',
+                padding: 6,
+                background: rating >= r ? '#fbbf24' : '#f3f4f6',
                 border: 'none',
-                borderRadius: 4,
+                borderRadius: 6,
                 cursor: 'pointer',
                 fontSize: 18,
               }}
@@ -82,37 +96,31 @@ export function Reviews() {
           <button
             onClick={submit}
             disabled={sending || !content.trim()}
-            style={{
-              marginLeft: 'auto',
-              padding: '8px 16px',
-              background: 'var(--tg-theme-button-color)',
-              color: 'var(--tg-theme-button-text-color)',
-              border: 'none',
-              borderRadius: 8,
-              cursor: sending ? 'wait' : 'pointer',
-            }}
+            className="btn btn--primary"
+            style={{ marginLeft: 'auto', width: 'auto', padding: '10px 20px' }}
           >
-            Отправить
+            {sending ? 'Отправка...' : 'Отправить'}
           </button>
         </div>
       </div>
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {reviews.map((r) => (
-          <div
-            key={r.id}
-            style={{
-              padding: 16,
-              background: 'var(--tg-theme-secondary-bg-color)',
-              borderRadius: 12,
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <strong>{r.first_name || r.username || 'Аноним'}</strong>
-              <span style={{ color: '#ffc107' }}>{'★'.repeat(r.rating)}</span>
-            </div>
-            <p style={{ fontSize: 14 }}>{r.content}</p>
+        {reviews.length === 0 ? (
+          <div className="card" style={{ padding: 40, textAlign: 'center' }}>
+            <p style={{ fontSize: 40, marginBottom: 12 }}>⭐</p>
+            <p style={{ color: 'var(--tg-theme-hint-color)' }}>Пока нет отзывов. Будьте первым!</p>
           </div>
-        ))}
+        ) : (
+          reviews.map((r) => (
+            <div key={r.id} className="card" style={{ padding: 20 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                <strong style={{ fontSize: 15 }}>{r.first_name || r.username || 'Аноним'}</strong>
+                <span style={{ color: '#fbbf24', fontSize: 14 }}>{'★'.repeat(r.rating)}</span>
+              </div>
+              <p style={{ fontSize: 15, lineHeight: 1.6 }}>{r.content}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

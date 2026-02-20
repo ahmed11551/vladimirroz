@@ -35,68 +35,99 @@ export function Cabinet() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div style={{ textAlign: 'center', padding: 40 }}>Загрузка...</div>;
+  if (loading) {
+    return (
+      <div className="loading">
+        <div className="loading-spinner" />
+        <span>Загрузка кабинета...</span>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h1 style={{ fontSize: 24, marginBottom: 24 }}>Личный кабинет</h1>
+      <header className="page-header">
+        <h1 className="page-title">Личный кабинет</h1>
+        <p className="page-subtitle">Ваши выигрыши и номера</p>
+      </header>
 
-      <h2 style={{ fontSize: 18, marginBottom: 12 }}>Мои выигрыши</h2>
-      {wins.length === 0 ? (
-        <p style={{ color: 'var(--tg-theme-hint-color)', marginBottom: 24 }}>Пока нет выигрышей</p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
-          {wins.map((w) => (
-            <div
-              key={w.id}
-              style={{
-                padding: 16,
-                background: '#e8f5e9',
-                borderRadius: 12,
-                border: '1px solid #a5d6a7',
-              }}
-            >
-              <h3 style={{ color: '#2e7d32' }}>🎉 {w.raffle_title}</h3>
-              <p>Выигрышный номер: {w.slot_number}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <h2 style={{ fontSize: 18, marginBottom: 12 }}>Мои номера</h2>
-      {slots.length === 0 ? (
-        <p style={{ color: 'var(--tg-theme-hint-color)' }}>Нет купленных номеров</p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {slots.map((s) => (
-            <Link
-              key={`${s.raffle_id}-${s.slot_number}`}
-              to={`/raffles/${s.raffle_id}`}
-              style={{
-                display: 'block',
-                padding: 16,
-                background: 'var(--tg-theme-secondary-bg-color)',
-                borderRadius: 12,
-                textDecoration: 'none',
-                color: 'inherit',
-              }}
-            >
-              <strong>{s.title}</strong> — номер {s.slot_number}
+      <section style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+          🏆 Мои выигрыши
+        </h2>
+        {wins.length === 0 ? (
+          <div className="card" style={{ padding: 24, textAlign: 'center' }}>
+            <p style={{ fontSize: 36, marginBottom: 12 }}>🎯</p>
+            <p style={{ color: 'var(--tg-theme-hint-color)' }}>Пока нет выигрышей</p>
+            <Link to="/raffles" style={{ display: 'inline-block', marginTop: 12, color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>
+              Участвовать в розыгрышах →
             </Link>
-          ))}
-        </div>
-      )}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {wins.map((w) => (
+              <div
+                key={w.id}
+                className="card"
+                style={{
+                  padding: 20,
+                  background: 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)',
+                  border: '1px solid #6ee7b7',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ fontSize: 28 }}>🎉</span>
+                  <div>
+                    <h3 style={{ fontSize: 16, fontWeight: 600, color: '#047857' }}>{w.raffle_title}</h3>
+                    <p style={{ fontSize: 14, color: '#065f46', marginTop: 4 }}>Выигрышный номер: <strong>{w.slot_number}</strong></p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+          🎫 Мои номера
+        </h2>
+        {slots.length === 0 ? (
+          <div className="card" style={{ padding: 20 }}>
+            <p style={{ color: 'var(--tg-theme-hint-color)', textAlign: 'center' }}>Нет купленных номеров</p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {slots.map((s) => (
+              <Link
+                key={`${s.raffle_id}-${s.slot_number}`}
+                to={`/raffles/${s.raffle_id}`}
+                className="card"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: 16,
+                  textDecoration: 'none',
+                  color: 'inherit',
+                }}
+              >
+                <strong style={{ fontSize: 15 }}>{s.title}</strong>
+                <span className="badge">№ {s.slot_number}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
 
       <Link
         to="/admin"
+        className="card"
         style={{
           display: 'block',
-          marginTop: 24,
-          padding: 12,
+          padding: 16,
           textAlign: 'center',
-          background: 'var(--tg-theme-secondary-bg-color)',
-          borderRadius: 8,
-          color: 'inherit',
+          color: 'var(--tg-theme-hint-color)',
           textDecoration: 'none',
           fontSize: 14,
         }}

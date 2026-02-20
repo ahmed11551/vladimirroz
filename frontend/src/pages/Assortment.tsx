@@ -6,6 +6,7 @@ type Product = {
   title: string;
   description: string;
   image_url: string | null;
+  emoji?: string;
   price: number | null;
 };
 
@@ -20,36 +21,49 @@ export function Assortment() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div style={{ textAlign: 'center', padding: 40 }}>Загрузка...</div>;
+  if (loading) {
+    return (
+      <div className="loading">
+        <div className="loading-spinner" />
+        <span>Загрузка ассортимента...</span>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Ассортимент</h1>
-      <p style={{ color: 'var(--tg-theme-hint-color)', marginBottom: 24 }}>
-        Товары, которые участвуют в розыгрышах
-      </p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <header className="page-header">
+        <h1 className="page-title">Ассортимент</h1>
+        <p className="page-subtitle">Продукты, которые участвуют в розыгрышах</p>
+      </header>
+
+      <div style={{ display: 'grid', gap: 16 }}>
         {products.map((p) => (
-          <div
-            key={p.id}
-            style={{
-              padding: 16,
-              background: 'var(--tg-theme-secondary-bg-color)',
-              borderRadius: 12,
-            }}
-          >
-            {p.image_url && (
-              <img
-                src={p.image_url}
-                alt=""
-                style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: 8, marginBottom: 12 }}
-              />
-            )}
-            <h3 style={{ fontSize: 18, marginBottom: 4 }}>{p.title}</h3>
-            <p style={{ fontSize: 14, color: 'var(--tg-theme-hint-color)' }}>{p.description}</p>
-            {p.price != null && (
-              <p style={{ marginTop: 8, fontWeight: 'bold' }}>{(p.price / 100).toFixed(0)} ₽</p>
-            )}
+          <div key={p.id} className="card" style={{ padding: 20, display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                minWidth: 56,
+                background: 'var(--accent-light)',
+                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 28,
+              }}
+            >
+              {p.emoji || '📦'}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <h3 style={{ fontSize: 17, fontWeight: 600, marginBottom: 4 }}>{p.title}</h3>
+              <p style={{ fontSize: 14, color: 'var(--tg-theme-hint-color)', lineHeight: 1.5 }}>{p.description}</p>
+              {p.price != null && (
+                <p style={{ marginTop: 12, fontWeight: 700, fontSize: 18, color: 'var(--accent)' }}>
+                  {(p.price / 100).toFixed(0)} ₽
+                </p>
+              )}
+            </div>
           </div>
         ))}
       </div>
